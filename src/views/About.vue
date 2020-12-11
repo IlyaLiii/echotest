@@ -1,12 +1,10 @@
 <template>
-  <div class="ymap-container" style="height: 650px">
-    <div id="app" v-cloak>
-
+  <div class="ymap-container">
       <p>
-        Let us locate you for better results...
-        <button @click="locateMe">Get location</button>
+        Предоставьте ваши данные геолокации для корректного оторажения карты...
+        <button @click="locateMe">Предоставить!</button>
       </p>
-    </div>
+    <div id="app" style="height: 800px;">
     <yandex-map
         :coords="coords"
         zoom=10>
@@ -21,9 +19,9 @@
           marker-id="123123"
           marker-type="Circle"
           circle-radius= '500'
-
       /></div>
     </yandex-map>
+    </div>
   </div>
 </template>
 <script>
@@ -76,7 +74,6 @@ export default {
         if (!('geolocation' in navigator)) {
           reject(new Error('Geolocation is not available.'));
         }
-
         navigator.geolocation.getCurrentPosition((pos) => {
           resolve(pos);
         }, (err) => {
@@ -103,5 +100,8 @@ export default {
 .ymap-container {
   height: 100%;
   width: 100%;
+}
+button{
+  width: 120px;
 }
 </style>

@@ -8,7 +8,7 @@ export default {
   data() {
     return {
       message: 'homepage',
-      btn_mes: 'submit',
+      btn_mes: 'Submit',
     };
   },
 };

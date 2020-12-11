@@ -7,16 +7,16 @@
     <div class="form-group"  :class="{ 'form-group--error': $v.login.$error }">
     <input
         ref="login"
-        v-model.trim="login" type="text" placeholder="login: "
+        v-model.trim="login" type="text" placeholder="Login: "
         @blur="$v.login.$touch()">
     </div>
     <div class="error" v-if="!$v.login.required && $v.login.$error">Field is required</div>
     <div class="error" v-if="!$v.login.minLength && $v.login.$error">
       Name must have at least 5 letters.</div>
-    <div class="form-group" :class="{ 'form-group--error': $v.pass.$error }">
+    <div class="form-group" :class="{ 'form-group--error': $v.pass.$error }"><br>
     <input
         ref="pass"
-        v-model.trim="pass" type="text" placeholder="password: "
+        v-model.trim="pass" type="text" placeholder="Password: "
         @blur="$v.pass.$touch()">
       <div class="error" v-if="!$v.pass.required && $v.pass.$error">Field is required</div>
       <div class="error" v-if="!$v.pass.minLength && $v.pass.$error">
@@ -86,7 +86,6 @@ export default {
           console.log(err);
         });
     },
-    // .finally();
   },
   computed: {
     messageComp2: {
@@ -107,12 +106,11 @@ export default {
 </script>
 <style>
 button {
-  width: 160px;
+  width: 100px;
   height: 20px;
 }
-.progress {
-  height: 25px;
+input {
   width: 200px;
+  height: 20px;
 }
-
 </style>
