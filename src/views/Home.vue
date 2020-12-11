@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img src="@/assets/logo.png" alt=""><br>
+    <img src="@/assets/logo.png" alt="">
     <p v-if="check_auto">Переходим на другой url...</p>
     <progress class="progress" v-if="check_auto"></progress>
     <br><br>
@@ -33,22 +33,18 @@
 import { required, minLength } from 'vuelidate/lib/validators';
 import btn from '../components/Btn.vue';
 
-// import bar from '../components/Bar.vue';
-
 export default {
   name: 'Home',
   components: {
     'btn-component': btn,
-    // 'bar': bar,
   },
   data: () => ({
-    message: 'Вы вошли',
     login: '',
     pass: '',
     isButtonDisabled: false,
     focused: false,
-    count: 10,
     check_auto: false,
+    LOG: '',
   }),
   validations: {
     login: {
@@ -60,13 +56,7 @@ export default {
       minLength: minLength(5),
     },
   },
-  // this.$router.push('about');
   methods: {
-    increment() {
-      this.$store.commit('increment');
-      console.log(this.$store.state.login);
-      console.log(this.$store.state.pass);
-    },
     submit() {
       const fetch = new Promise(((resolve, reject) => {
         setTimeout(() => {
@@ -75,6 +65,8 @@ export default {
           if (!(this.$v.login.$error
               || this.$v.pass.$error)
           ) {
+            this.$store.commit('Authorization_log', { login: this.login });
+            this.$store.commit('Authorization_pass', { pass: this.pass });
             this.isButtonDisabled = true;
             this.check_auto = true;
             resolve('done');
@@ -97,9 +89,6 @@ export default {
     // .finally();
   },
   computed: {
-    messageComp() {
-      return this.message;
-    },
     messageComp2: {
       get() {
         return this.message;

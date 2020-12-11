@@ -1,48 +1,107 @@
 <template>
-  <div>
-  <yandex-map :settings="settings" :coords="coords" @click="onClick">
-    <ymap-marker
-        marker-id="123"
+  <div class="ymap-container" style="height: 650px">
+    <div id="app" v-cloak>
+
+      <p>
+        Let us locate you for better results...
+        <button @click="locateMe">Get location</button>
+      </p>
+    </div>
+    <yandex-map
         :coords="coords"
-        :balloon-template="balloonTemplate"
-    />
-  </yandex-map>
+        zoom=10>
+      <div v-if="isButtonDisabled">
+      <ymap-marker
+          :coords="coords"
+          marker-id="123123"
+          marker-type="Placemark"
+      />
+      <ymap-marker
+          :coords="coords"
+          marker-id="123123"
+          marker-type="Circle"
+          circle-radius= '500'
+
+      /></div>
+    </yandex-map>
   </div>
 </template>
 <script>
 // @ is an alias to /src
 
-import { yandexMap, ymapMarker } from 'vue-yandex-maps';
-
 export default {
-  components: { yandexMap, ymapMarker },
   data: () => ({
-    coords: [54, 39],
-    settings: {
-      apiKey: 'fdeb1561-ef41-4c0c-a077-9d1f39d06da6\n',
-      lang: 'ru_RU',
-      coordorder: 'latlong',
-      version: '2.1',
-    },
+    isButtonDisabled: false,
+    location: null,
+    gettingLocation: false,
+    errorStr: null,
+    coords: [null, null],
+    placemarks: [
+      {
+        coords: [null, null],
+        properties: {
+          balloonContentBody: 'asdfd',
+          balloonContentFooter: '1',
+          balloonContentHeader: '1',
+        },
+        clusterName: '1',
+        markerId: '1',
+      },
+      {
+        coords: [null, null],
+        properties: {
+          balloonContentBody: 'asdfasdf',
+          balloonContentFooter: '1',
+          balloonContentHeader: '1',
+        },
+        clusterName: '1',
+        markerId: '2',
+      },
+      {
+        coords: [null, null],
+        properties: {
+          balloonContentBody: 'asdfasdf',
+          balloonContentFooter: '1',
+          balloonContentHeader: '1',
+        },
+        clusterName: '1',
+        markerId: '3',
+      },
+    ],
+    layout: '<div>{{ properties.balloonContentHeader }}</div><div>{{ properties.balloonContentBody }}</div><div>{{ properties.balloonContentFooter }}</div>',
   }),
-  computed: {
-    balloonTemplate() {
-      return `
-        <h1 class="red">Hi, everyone!</h1>
-        <p>I am here: ${this.coords}</p>
-        <img src="http://via.placeholder.com/350x150">
-      `;
-    },
-  },
   methods: {
-    onClick(e) {
-      this.coords = e.get('coords');
+    async getLocation() {
+      return new Promise((resolve, reject) => {
+        if (!('geolocation' in navigator)) {
+          reject(new Error('Geolocation is not available.'));
+        }
+
+        navigator.geolocation.getCurrentPosition((pos) => {
+          resolve(pos);
+        }, (err) => {
+          reject(err);
+        });
+      });
+    },
+    async locateMe() {
+      this.gettingLocation = true;
+      try {
+        this.gettingLocation = false;
+        this.location = await this.getLocation();
+      } catch (e) {
+        this.gettingLocation = false;
+        this.errorStr = e.message;
+      }
+      this.coords = [this.location.coords.latitude, this.location.coords.longitude];
+      this.isButtonDisabled = true;
     },
   },
 };
 </script>
 <style>
-.red {
-  color: red;
+.ymap-container {
+  height: 100%;
+  width: 100%;
 }
 </style>

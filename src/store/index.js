@@ -5,12 +5,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    login: '123123',
-    pass: '123',
+    user_login: '',
+    user_pass: '',
   },
   mutations: {
-    increment(state) {
-      state.login = 'valid';
+    Authorization_log(state, { login }) {
+      state.user_login = login;
+    },
+    Authorization_pass(state, { pass }) {
+      state.user_pass = pass;
     },
   },
   actions: {
