@@ -67,7 +67,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['GET_USER']),
+    ...mapActions(['GET_USER', 'FETCH_USER']),
     // submit_auto() {
     //   const fetch = new Promise((resolve, reject) => {
     //     setTimeout(() => {
@@ -94,27 +94,15 @@ export default {
     //       console.log(err);
     //     });
     // },
-    submit_auto() {
+    async submit_auto() {
       this.$v.login.$touch();
       this.$v.pass.$touch();
       if (!(this.$v.login.$error || this.$v.pass.$error)) {
         this.isButtonDisabled = true;
         this.check_auto = true;
-        this.GET_USER({ login: this.login, pass: this.pass });
-        // this.$store.commit('Authorization_log', { login: this.login });
-        // this.$store.commit('Authorization_pass', { pass: this.pass });
+        await this.FETCH_USER({ login: this.login, pass: this.pass });
         this.$router.push('about');
       }
-    },
-  },
-  computed: {
-    messageComp2: {
-      get() {
-        return this.message;
-      },
-      set(val) {
-        this.message = val;
-      },
     },
   },
   watch: {

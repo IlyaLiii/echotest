@@ -1,10 +1,14 @@
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
 import YmapPlugin from 'vue-yandex-maps';
+import VueSidebarMenu from 'vue-sidebar-menu';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+// import 'vue-sidebar-menu/dist/vue-sidebar-menu.css';
+import 'vue-sidebar-menu/src/scss/vue-sidebar-menu.scss';
 
+Vue.use(VueSidebarMenu);
 Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
