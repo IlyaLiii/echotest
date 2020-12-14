@@ -1,18 +1,20 @@
 <template>
-  <progress value={{i}}></progress>
+  <progress value="{{i}}"></progress>
 </template>
 
 <script>
 export default {
   name: 'Bar',
   data() {
-    0;
+    return {
+      i: 0,
+    };
   },
 };
 </script>
 
 <style scoped>
-  progress {
-    color: red;
-  }
+progress {
+  color: red;
+}
 </style>
