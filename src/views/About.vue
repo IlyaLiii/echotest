@@ -20,6 +20,9 @@
           marker-type="Circle"
           circle-radius= '500'
       /></div>
+      <div>
+        <button class="back" @click="back">Назад</button>
+      </div>
     </yandex-map>
     </div>
   </div>
@@ -93,6 +96,9 @@ export default {
       this.coords = [this.location.coords.latitude, this.location.coords.longitude];
       this.isButtonDisabled = true;
     },
+    back() {
+      this.$router.push('/');
+    },
   },
 };
 </script>
@@ -103,5 +109,8 @@ export default {
 }
 button{
   width: 120px;
+}
+back{
+  height: 45px;
 }
 </style>

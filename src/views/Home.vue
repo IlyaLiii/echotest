@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img src="@/assets/logo.png" alt="" />
+    <img class="logo" src="@/assets/logo.png" alt="logo" />
     <p v-if="check_auto">Переходим на другой url...</p>
     <progress class="progress" v-if="check_auto"></progress>
     <br /><br />
@@ -9,13 +9,14 @@
         ref="login"
         v-model.trim="login"
         type="text"
-        placeholder="Login: "
+        placeholder="Логин: "
         @blur="$v.login.$touch()"
+        :disabled="isButtonDisabled"
       />
     </div>
-    <div class="error" v-if="!$v.login.required && $v.login.$error">Field is required</div>
+    <div class="error" v-if="!$v.login.required && $v.login.$error">Заполните поле!</div>
     <div class="error" v-if="!$v.login.minLength && $v.login.$error">
-      Name must have at least 5 letters.
+      Минимум 5 символов
     </div>
     <div class="form-group" :class="{ 'form-group--error': $v.pass.$error }">
       <br />
@@ -23,12 +24,13 @@
         ref="pass"
         v-model.trim="pass"
         type="text"
-        placeholder="Password: "
+        placeholder="Пароль: "
         @blur="$v.pass.$touch()"
+        :disabled="isButtonDisabled"
       />
-      <div class="error" v-if="!$v.pass.required && $v.pass.$error">Field is required</div>
+      <div class="error" v-if="!$v.pass.required && $v.pass.$error">Заполните поле!</div>
       <div class="error" v-if="!$v.pass.minLength && $v.pass.$error">
-        Name must have at least 5 letters.
+        Минимум 5 символов
       </div>
     </div>
     <br />
@@ -48,6 +50,7 @@ export default {
     'btn-component': btn,
   },
   data: () => ({
+    image: '',
     login: '',
     pass: '',
     isButtonDisabled: false,
@@ -67,7 +70,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['GET_USER', 'FETCH_USER']),
+    ...mapActions(['GET_IMAGE', 'FETCH_USER']),
     // submit_auto() {
     //   const fetch = new Promise((resolve, reject) => {
     //     setTimeout(() => {
@@ -114,11 +117,15 @@ export default {
 </script>
 <style>
 button {
-  width: 100px;
-  height: 20px;
+  width: 200px;
+  height: 40px;
 }
 input {
-  width: 200px;
-  height: 20px;
+  width: 250px;
+  height: 40px;
+}
+.logo{
+  height: 350px;
+  width: 350px;
 }
 </style>

@@ -3,22 +3,30 @@
   <div id="view" :class="[{'collapsed' : collapsed_main}]">
         <router-view/>
   </div>
-  <sidebar-menu
-      class="sidebar"
-      :menu="menu_main"
-      :collapsed="collapsed_main"
-      @item-click="onItemClick"
-      @collapse="onCollapse"
-  />
+      <sidebar-menu
+    class="sidebar"
+    :menu="menu_main"
+    :collapsed="collapsed_main"
+    @item-click="onItemClick"
+    @collapse="onCollapse"
+  >
+        <div slot="footer">
+          <img class="avatarka" src=@/assets/avatar.jpg alt="" v-if="!addimage">
+          <img class="avatarka" :src=img alt="" v-if="addimage">
+        </div>
+      </sidebar-menu>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 
 export default {
   name: 'App',
   data() {
     return {
+      addimage: false,
+      img: '',
       menu_main: [
         {
           href: '/',
@@ -40,12 +48,20 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['GET_IMAGE']),
     onItemClick(e, i) {
       console.log(`onItemClick${e}${i}`);
+      this.img = this.$store.state.File;
+      this.addimage = true;
     },
     onCollapse(c) {
       console.log('onCollapse');
       this.collapsed = c;
+    },
+  },
+  watch: {
+    img(newVal, oldVal) {
+      console.log('watch', newVal, oldVal);
     },
   },
 };
@@ -68,6 +84,11 @@ export default {
   content: "\f07e";
   font-family: "FontAwesome",serif;
 }
+//.sidebar.v-sidebar-menu .collapse.avatarka:after {
+//  height: 200px;
+//  width: 200px;
+//  border-radius:80px;
+//}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -75,13 +96,13 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-//.sidebar {
-//  margin: 0;
-//  padding: 0;
-//  width: 200px;
-//  background-color: #f1f1f1;
-//  position: fixed;
-//  height: 100%;
-//  overflow: auto;
-//}
+.main_btn {
+  height: 50px;
+  width: 50px;
+}
+.avatarka{
+  height: 50px;
+  width: 50px;
+  border-radius: 20px;
+}
 </style>

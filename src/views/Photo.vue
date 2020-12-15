@@ -1,58 +1,65 @@
 <template>
   <div class="main_cont">
     <div>
-      <img class="ava" src="@/assets/avatar.jpg" alt="" />
+      <img class="ava" src="@/assets/avatar.jpg" alt="Здесь будет превью вашего аватара"
+           v-if="!imageupload"/>
+      <img class="ava" :src=image alt="Здесь будет превью вашего аватара"
+           v-if="imageupload"/>
     </div>
     <div class="container">
       <br><br>
-      <h3>Выберите аватар:</h3>
-      <input class="inp" type=file name="avatar" ref="file" @change="handleFileUpload()"><br>
-      <img :src="imagePreview" v-show="showPreview"/>
-      <p>{{this.$store.state.image}}</p>
+      <h3>{{ message }}</h3>
+      <input @change="handleImage" class="inp" type="file" accept="image/*"><br>
+    </div>
+    <div>
+      <button class="back" @click="back">Назад</button>
     </div>
   </div>
 </template>
 
 <script>
-// import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'photo.vue',
   data: () => ({
-    file: '',
-    name: '',
-    type: '',
-    url: '',
-    showPreview: false,
-    imagePreview: '',
+    message: 'Выберите аватар!',
+    image: '',
+    imageupload: false,
   }),
+  mounted() {
+    this.image = '@/assets/logo.png';
+  },
   methods: {
-    handleFileUpload() {
-      // console.log('Засабмитил хоть???');
-      console.log(this.$refs.file.files[0]);
-      this.file = { ...this.$refs.file.files[0] };
-      console.log(this.file);
-      this.name = this.$refs.file.files[0].name;
-      this.type = this.$refs.file.files[0].type;
-      this.url = this.file.url;
-      console.log(this.name);
-      console.log(this.url);
-      //
-      this.$store.commit('UPLOAD_IMG', { name: this.name, type: this.type });
-      this.$store.commit('UPLOAD_FILE', { file: this.$refs.file.files[0] });
-
+    ...mapActions(['GET_IMAGE']),
+    //
+    handleImage(e) {
+      const selectedImage = e.target.files[0];
+      this.createBase64Image(selectedImage);
+    },
+    createBase64Image(fileObject) {
       const reader = new FileReader();
-      reader.addEventListener('load', () => {
-        this.showPreview = true;
-        this.imagePreview = reader.result;
-      }, false); // .bind(this)
-      if (this.file) {
-        if (/\.(jpe?g|png|gif)$/i.test(this.file.name)) {
-          reader.readAsDataURL(this.file);
-        }
-      }
+      reader.onload = (e) => {
+        this.image = e.target.result;
+        console.log(this.image);
+        this.GET_IMAGE({ image: this.image });
+        this.imageupload = true;
+        this.message = 'Хороший выбор';
+      };
+      reader.readAsDataURL(fileObject);
+    },
+    back() {
+      this.$router.push('about');
     },
   },
+  // mounted() {
+  //   console.log(this.$store.state.File);
+  // },
+  // watch: {
+  //   img(newVal, oldVal) {
+  //     console.log('watch', newVal, oldVal);
+  //   },
+  // },
 };
 </script>
 
@@ -64,8 +71,8 @@ export default {
   flex-direction: column;
 }
 .ava{
-  width: 350px;
-  height: 350px;
+  width: 300px;
+  height: 300px;
   border-radius: 200px;
 }
 .container{

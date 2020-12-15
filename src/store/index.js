@@ -9,19 +9,19 @@ export default new Vuex.Store({
       login: '',
       pass: '',
     },
-    image: {},
-    File: {},
+    File: '',
+    count: 5,
   },
   mutations: {
     FORM_AUTO(state, data) {
       state.form.login = data.login;
       state.form.pass = data.pass;
     },
-    UPLOAD_IMG(state, data) {
-      state.image = { ...data };
+    UPLOAD_FILE(state, { data }) {
+      state.File = data.image;
     },
-    UPLOAD_FILE(state, data) {
-      state.File = { ...data };
+    COUNTPLUSPLUS(state, data) {
+      state.count += data;
     },
   },
   actions: {
@@ -36,5 +36,8 @@ export default new Vuex.Store({
     }).catch((error) => {
       throw new Error(error);
     }),
+    GET_IMAGE({ commit }, data) {
+      commit('UPLOAD_FILE', { data });
+    },
   },
 });
